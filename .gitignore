@@ -18,6 +18,12 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Local Postman desktop cache
+# Local Postman desktop app cache
 .postman/
+postman/collections/
+postman/documents/
+postman/environments/
+postman/flows/
 postman/globals/
+postman/mocks/
+postman/specs/

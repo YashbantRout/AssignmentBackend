@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const userRoutes = require('./routes/user.route');
 const postRoutes = require('./routes/post.route');
 const { notFound, errorHandler } = require('./middleware/error.middleware');
@@ -9,6 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static documentation & testing dashboard
+app.use(express.static(path.join(__dirname, '../public')));
+
 // Root health check endpoint
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -16,9 +20,15 @@ app.get('/', (req, res) => {
     message: 'Welcome to the Backend Tutorial REST API',
     endpoints: {
       users: '/api/users',
-      posts: '/api/posts'
+      posts: '/api/posts',
+      docs: '/docs'
     }
   });
+});
+
+// Dedicated route for testing dashboard
+app.get('/docs', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/test-dashboard.html'));
 });
 
 // API Routes
@@ -32,4 +42,3 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
-

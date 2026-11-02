@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>YASHBANTROUT REST API — All Operations</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px; color: #24292f; background: #ffffff; }
+  .header { margin-bottom: 20px; border-bottom: 1px solid #d0d7de; padding-bottom: 14px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .subtitle { font-size: 13px; color: #57609a; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; }
+  .card { border-radius: 8px; overflow: hidden; border: 1px solid #d0d7de; background: #ffffff; box-shadow: 0 1px 3px rgba(31,35,40,0.06); }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #d0d7de; background: #f6f8fa; }
+  .badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; min-width: 58px; text-align: center; }
+  .badge.post   { background: #e36209; color: #fff; }
+  .badge.get    { background: #0969da; color: #fff; }
+  .badge.put    { background: #bf8700; color: #fff; }
+  .badge.delete { background: #cf222e; color: #fff; }
+  .card-title { font-size: 13px; font-weight: 600; flex: 1; color: #1f2328; }
+  .status-pill { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; background: #dafbe1; color: #1a7f37; border: 1px solid #4ac26b; }
+  .card-body { padding: 12px 14px; background: #f6f8fa; }
+  .url { font-size: 11px; font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; color: #57606a; margin-bottom: 8px; word-break: break-all; background: #ffffff; padding: 4px 8px; border-radius: 4px; border: 1px solid #d0d7de; }
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #57606a; margin-bottom: 4px; margin-top: 8px; }
+  .json-block { background: #ffffff; border: 1px solid #d0d7de; border-radius: 6px; padding: 8px 10px; font-size: 11px; font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; line-height: 1.5; overflow-x: auto; }
+  .key { color: #cf222e; }
+  .str { color: #1a7f37; }
+  .num { color: #0969da; }
+  .bool-true { color: #8250df; }
+  .auth-section { margin-bottom: 20px; }
+  .auth-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .tag { font-size: 10px; padding: 2px 8px; border-radius: 12px; background: #eaeef2; color: #24292f; border: 1px solid #d0d7de; }
+  .footer { margin-top: 24px; padding: 12px 16px; border-radius: 8px; background: #f6f8fa; border: 1px solid #d0d7de; display: flex; align-items: center; gap: 12px; }
+  .footer-icon { font-size: 22px; }
+  .footer-text { font-size: 12px; color: #57606a; line-height: 1.5; }
+  .footer-text strong { color: #1f2328; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚀 YASHBANTROUT REST API — All Operations</h1>
+  <p class="subtitle">Node.js · Express · MongoDB · JWT Auth &nbsp;|&nbsp; Base URL: <code>http://localhost:5000</code></p>
+</div>
+
+<!-- Auth Section -->
+<div class="auth-section">
+  <div class="section-label" style="font-size: 12px; margin-bottom: 8px;">🔐 Authentication Endpoints</div>
+  <div class="auth-grid">
+
+    <!-- Register User -->
+    <div class="card">
+      <div class="card-header">
+        <span class="badge post">POST</span>
+        <span class="card-title">Register User</span>
+        <span class="status-pill">201 ✓</span>
+      </div>
+      <div class="card-body">
+        <div class="url">/api/users/register</div>
+        <div class="section-label">Request Body</div>
+        <div class="json-block">
+          {<br>
+          &nbsp;&nbsp;<span class="key">"name"</span>: <span class="str">"Chinmay Rout"</span>,<br>
+          &nbsp;&nbsp;<span class="key">"email"</span>: <span class="str">"chinmay@example.com"</span>,<br>
+          &nbsp;&nbsp;<span class="key">"password"</span>: <span class="str">"password123"</span><br>
+          }
+        </div>
+        <div class="section-label">Response</div>
+        <div class="json-block">
+          <span class="key">"success"</span>: <span class="bool-true">true</span>,<br>
+          <span class="key">"_id"</span>: <span class="str">"6ae8a7ca..."</span>,<br>
+          <span class="key">"token"</span>: <span class="str">"eyJhbGci..."</span>
+        </div>
+        <div class="tag-row"><span class="tag">Public</span><span class="tag">Auto-saves token</span></div>
+      </div>
+    </div>
+
+    <!-- Login User -->
+    <div class="card">
+      <div class="card-header">
+        <span class="badge post">POST</span>
+        <span class="card-title">Login User</span>
+        <span class="status-pill">200 ✓</span>
+      </div>
+      <div class="card-body">
+        <div class="url">/api/users/login</div>
+        <div class="section-label">Request Body</div>
+        <div class="json-block">
+          {<br>
+          &nbsp;&nbsp;<span class="key">"email"</span>: <span class="str">"chinmay@example.com"</span>,<br>
+          &nbsp;&nbsp;<span class="key">"password"</span>: <span class="str">"password123"</span><br>
+          }
+        </div>
+        <div class="section-label">Response</div>
+        <div class="json-block">
+          <span class="key">"success"</span>: <span class="bool-true">true</span>,<br>
+          <span class="key">"message"</span>: <span class="str">"User logged in successfully"</span>,<br>
+          <span class="key">"token"</span>: <span class="str">"eyJhbGci..."</span>
+        </div>
+        <div class="tag-row"><span class="tag">Public</span><span class="tag">Auto-saves token</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Posts Section -->
+<div class="section-label" style="font-size: 12px; margin-bottom: 8px;">📝 Posts CRUD Endpoints</div>
+<div class="grid">
+
+  <!-- POST Create -->
+  <div class="card">
+    <div class="card-header">
+      <span class="badge post">POST</span>
+      <span class="card-title">Create Post</span>
+      <span class="status-pill">201 ✓</span>
+    </div>
+    <div class="card-body">
+      <div class="url">/api/posts</div>
+      <div class="section-label">Headers</div>
+      <div class="json-block"><span class="key">Authorization</span>: <span class="str">Bearer {{token}}</span></div>
+      <div class="section-label">Request Body</div>
+      <div class="json-block">
+        {<br>
+        &nbsp;&nbsp;<span class="key">"title"</span>: <span class="str">"My First Post"</span>,<br>
+        &nbsp;&nbsp;<span class="key">"description"</span>: <span class="str">"Created via Postman!"</span><br>
+        }
+      </div>
+      <div class="section-label">Response</div>
+      <div class="json-block">
+        <span class="key">"_id"</span>: <span class="str">"6ae8a7d9..."</span>,<br>
+        <span class="key">"title"</span>: <span class="str">"My First Post"</span>,<br>
+        <span class="key">"author"</span>: { <span class="key">"name"</span>: <span class="str">"Chinmay Rout"</span> }
+      </div>
+      <div class="tag-row"><span class="tag">🔒 Protected</span><span class="tag">Auto-saves post_id</span></div>
+    </div>
+  </div>
+
+  <!-- GET All -->
+  <div class="card">
+    <div class="card-header">
+      <span class="badge get">GET</span>
+      <span class="card-title">Get All Posts</span>
+      <span class="status-pill">200 ✓</span>
+    </div>
+    <div class="card-body">
+      <div class="url">/api/posts</div>
+      <div class="section-label">Response</div>
+      <div class="json-block">
+        {<br>
+        &nbsp;&nbsp;<span class="key">"success"</span>: <span class="bool-true">true</span>,<br>
+        &nbsp;&nbsp;<span class="key">"count"</span>: <span class="num">1</span>,<br>
+        &nbsp;&nbsp;<span class="key">"data"</span>: [ { <span class="key">"_id"</span>: <span class="str">"6ae8a7d9..."</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"title"</span>: <span class="str">"My First Post"</span> } ]<br>
+        }
+      </div>
+      <div class="tag-row"><span class="tag">🌐 Public</span><span class="tag">Returns array</span></div>
+    </div>
+  </div>
+
+  <!-- GET by ID -->
+  <div class="card">
+    <div class="card-header">
+      <span class="badge get">GET</span>
+      <span class="card-title">Get Post By ID</span>
+      <span class="status-pill">200 ✓</span>
+    </div>
+    <div class="card-body">
+      <div class="url">/api/posts/{{post_id}}</div>
+      <div class="section-label">Response</div>
+      <div class="json-block">
+        {<br>
+        &nbsp;&nbsp;<span class="key">"success"</span>: <span class="bool-true">true</span>,<br>
+        &nbsp;&nbsp;<span class="key">"data"</span>: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"_id"</span>: <span class="str">"6ae8a7d9..."</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"title"</span>: <span class="str">"My First Post"</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"author"</span>: { <span class="key">"name"</span>: <span class="str">"Chinmay Rout"</span> }<br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+      <div class="tag-row"><span class="tag">🌐 Public</span><span class="tag">Uses {{post_id}}</span></div>
+    </div>
+  </div>
+
+  <!-- PUT Update -->
+  <div class="card">
+    <div class="card-header">
+      <span class="badge put">PUT</span>
+      <span class="card-title">Update Post</span>
+      <span class="status-pill">200 ✓</span>
+    </div>
+    <div class="card-body">
+      <div class="url">/api/posts/{{post_id}}</div>
+      <div class="section-label">Headers</div>
+      <div class="json-block"><span class="key">Authorization</span>: <span class="str">Bearer {{token}}</span></div>
+      <div class="section-label">Request Body</div>
+      <div class="json-block">
+        {<br>
+        &nbsp;&nbsp;<span class="key">"title"</span>: <span class="str">"My Updated Post"</span>,<br>
+        &nbsp;&nbsp;<span class="key">"description"</span>: <span class="str">"Updated via Postman!"</span><br>
+        }
+      </div>
+      <div class="tag-row"><span class="tag">🔒 Protected</span><span class="tag">Owner only</span></div>
+    </div>
+  </div>
+
+  <!-- DELETE -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="card-header">
+      <span class="badge delete">DELETE</span>
+      <span class="card-title">Delete Post</span>
+      <span class="status-pill">200 ✓</span>
+    </div>
+    <div class="card-body">
+      <div class="url">/api/posts/{{post_id}}</div>
+      <div class="section-label">Headers</div>
+      <div class="json-block"><span class="key">Authorization</span>: <span class="str">Bearer {{token}}</span></div>
+      <div class="section-label">Response</div>
+      <div class="json-block">
+        { <span class="key">"success"</span>: <span class="bool-true">true</span>, <span class="key">"message"</span>: <span class="str">"Post deleted successfully"</span>, <span class="key">"data"</span>: { <span class="key">"id"</span>: <span class="str">"6ae8a7d9..."</span> } }
+      </div>
+      <div class="tag-row"><span class="tag">🔒 Protected</span><span class="tag">Owner only</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="footer-icon">📁</span>
+  <div class="footer-text">
+    All requests saved to collection <strong>YASHBANTROUT - REST API</strong> with folders <strong>Auth</strong> &amp; <strong>Posts</strong>. Variables <strong>{{token}}</strong> and <strong>{{post_id}}</strong> are auto-captured by test scripts. Run <strong>Auth → Login</strong> first, then any Posts request.
+  </div>
+</div>
+
+</body>
+</html>

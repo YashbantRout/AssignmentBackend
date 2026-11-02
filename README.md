@@ -1,258 +1,43 @@
-# Backend Development Assignment – Node.js, Express & MongoDB REST API
+# 🚀 YASHBANTROUT REST API — Complete Backend Assignment
 
-A complete, production-ready, beginner-friendly RESTful backend API built with **Node.js**, **Express.js**, **MongoDB Atlas**, **Mongoose**, **JWT Authentication**, and **Bcrypt**.
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT" />
+  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" alt="Postman" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</p>
 
-This project implements an MVC-style architecture featuring secure user authentication (Register, Login, Profile) and full CRUD operations for Posts (Create, Read, Update, Delete) with resource ownership authorization.
-
-Based on the [Backend Tutorial](https://www.youtube.com/watch?v=KOutPbKc9UM&t=2s).
-
----
-
-## 📋 Table of Contents
-- [Technologies Used](#-technologies-used)
-- [Project Architecture & Folder Structure](#-project-architecture--folder-structure)
-- [Prerequisites](#-prerequisites)
-- [Installation & Setup](#-installation--setup)
-- [MongoDB Atlas Setup Guide](#-mongodb-atlas-setup-guide)
-- [Environment Variables](#-environment-variables)
-- [Running the Application](#-running-the-application)
-- [API Endpoints Reference](#-api-endpoints-reference)
-- [Postman Testing Guide](#-postman-testing-guide)
-- [Sample Requests & Responses](#-sample-requests--responses)
-- [Testing & Quality Assurance](#-testing--quality-assurance)
-- [Security Best Practices](#-security-best-practices)
+<p align="center">
+  <strong>Production-ready RESTful API built with Node.js, Express, MongoDB Atlas, and JWT Authentication.</strong><br>
+  <em>Features complete User Authentication, Post CRUD operations, and author ownership validation.</em>
+</p>
 
 ---
 
-## 🛠 Technologies Used
+## 📸 API Operations & Testing Dashboard
 
-- **Node.js** (v20+ / CommonJS) - JavaScript runtime environment
-- **Express.js** (v5) - Minimalist web framework for Node.js
-- **MongoDB Atlas & Mongoose** (v9) - Cloud NoSQL database and Object Data Modeling (ODM) library
-- **bcrypt** - Salting and hashing passwords
-- **jsonwebtoken (JWT)** - Stateless authentication and token verification
-- **dotenv** - Loading configuration and credentials securely from `.env`
-- **Nodemon** - Development server with live auto-reload
-- **Postman** - API design, testing, and documentation
-- **Git & GitHub** - Version control and repository management
+> 💡 **Static UI Available:** A static interactive dashboard is included in [`public/test-dashboard.html`](public/test-dashboard.html) and automatically served at `http://localhost:5000/docs` when the server is running.
 
 ---
 
-## 📁 Project Architecture & Folder Structure
+### 🔐 Authentication Endpoints
 
-The project follows a clean **MVC (Model-View-Controller / Model-Controller-Route)** architectural pattern:
+<table>
+<tr>
+<td width="50%" valign="top">
 
-```text
-backend-tutorial/
-│
-├── src/
-│   ├── config/
-│   │   └── database.js          # MongoDB connection handler with error handling
-│   │
-│   ├── controllers/
-│   │   ├── user.controller.js   # User registration, login, and profile logic
-│   │   └── post.controller.js   # Post CRUD operations with ownership validation
-│   │
-│   ├── models/
-│   │   ├── user.model.js        # Mongoose User schema, password hashing hooks
-│   │   └── post.model.js        # Mongoose Post schema with User reference
-│   │
-│   ├── routes/
-│   │   ├── user.route.js        # User auth route definitions
-│   │   └── post.route.js        # Post CRUD route definitions
-│   │
-│   ├── middleware/
-│   │   ├── auth.middleware.js   # Bearer JWT verification middleware
-│   │   └── error.middleware.js  # Centralized error and 404 handler
-│   │
-│   ├── app.js                   # Express app setup and middleware registration
-│   └── index.js                 # Server startup and database bootstrap
-│
-├── postman/
-│   └── backend-tutorial.postman_collection.json  # Exported Postman collection
-│
-├── tests/
-│   └── api.test.js              # Automated test suite (22 tests)
-│
-├── .env.example                 # Template for environment variables
-├── .env                         # Local environment variables (never committed)
-├── .gitignore                   # Excludes node_modules, .env, and logs
-├── package.json                 # Project dependencies and npm scripts
-└── README.md                    # Project documentation
-```
+#### `POST` `/api/users/register` &nbsp; ![Status](https://img.shields.io/badge/Status-201%20Created-2ea44f?style=flat-square)
+*Register a new user account with hashed password.*
 
----
-
-## ⚙️ Prerequisites
-
-Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (Version 18.x or later)
-- [Git](https://git-scm.com/)
-- A free [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas)
-- [Postman](https://www.postman.com/downloads/) for testing
-
----
-
-## 🚀 Installation & Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/backend-tutorial.git
-   cd backend-tutorial
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment Variables:**
-   Copy the `.env.example` file to create your own `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Open `.env` and fill in your MongoDB Atlas connection string and JWT secret (see below).
-
----
-
-## ☁️ MongoDB Atlas Setup Guide
-
-Follow these beginner steps to connect your MongoDB Atlas cloud database:
-
-1. **Sign Up / Log In:** Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and log in.
-2. **Create a Free Cluster:**
-   - Click **Create Database**.
-   - Choose the **M0 Free Tier**.
-   - Select your preferred cloud provider and region closest to you.
-   - Click **Create Deployment**.
-3. **Set Up Security & Credentials:**
-   - **Database User:** Under **Security > Database Access**, click **Add New Database User**.
-     - Authentication Method: **Password**.
-     - Enter a Username (e.g. `dbAdmin`) and a secure Password.
-     - Role: **Read and write to any database**.
-     - Click **Add User**.
-   - **Network Access (IP Whitelist):** Under **Security > Network Access**, click **Add IP Address**.
-     - For development/tutorial purposes, select **Allow Access from Anywhere** (`0.0.0.0/0`) or enter your current IP address.
-     - Click **Confirm**.
-4. **Get Connection String:**
-   - In **Database Deployments**, click **Connect**.
-   - Select **Drivers** (Node.js).
-   - Copy the connection string format:
-     ```text
-     mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/backend-assignment?retryWrites=true&w=majority
-     ```
-   - Replace `<username>` and `<password>` with the credentials you created in Step 3.
-5. **Paste into `.env`:**
-   ```env
-   MONGODB_URI=mongodb+srv://myUsername:myPassword@cluster0.abcde.mongodb.net/backend-assignment?retryWrites=true&w=majority
-   ```
-
-> [!IMPORTANT]
-> Never commit your `.env` file or paste real credentials into public code repositories! The `.gitignore` file automatically protects `.env`.
-
----
-
-## 🔑 Environment Variables
-
-The application requires the following environment variables configured in `.env`:
-
-| Variable | Description | Example / Default |
-| :--- | :--- | :--- |
-| `PORT` | The port the Express HTTP server listens on | `5000` |
-| `MONGODB_URI` | MongoDB Atlas / Local MongoDB connection string | `mongodb+srv://...` |
-| `JWT_SECRET` | Secret key used to sign and verify JSON Web Tokens | `your_super_secret_jwt_key` |
-| `JWT_EXPIRES_IN` | Token expiration timeframe | `1d` (1 day) |
-
----
-
-## ▶️ Running the Application
-
-### Development Mode (with Nodemon auto-restart)
-```bash
-npm run dev
-```
-
-### Production Mode
-```bash
-npm start
-```
-
-### Running Automated Tests
-```bash
-npm test
-```
-
-When started, you should see console output:
-```text
-[Database] MongoDB Connected successfully: cluster0-shard-00-00.mongodb.net
-[Server] Server is running on port 5000
-[Server] Environment: development
-[Server] Health check: http://localhost:5000/
-```
-
----
-
-## 📡 API Endpoints Reference
-
-### 1. Authentication Endpoints (`/api/users`)
-
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/users/register` | Public | Register a new user with hashed password |
-| `POST` | `/api/users/login` | Public | Authenticate user & return signed JWT token |
-| `GET` | `/api/users/profile` | Private | Retrieve authenticated user's profile |
-
-### 2. Posts CRUD Endpoints (`/api/posts`)
-
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/posts` | Private | Create a new post (associated with current user) |
-| `GET` | `/api/posts` | Public | Retrieve all posts (with author details) |
-| `GET` | `/api/posts/:id` | Public | Retrieve single post by ID (with author details) |
-| `PUT` | `/api/posts/:id` | Private | Update post (only allowed for post owner) |
-| `DELETE` | `/api/posts/:id` | Private | Delete post (only allowed for post owner) |
-
----
-
-## 📮 Postman Testing Guide
-
-A complete, pre-configured Postman Collection is included in the project:
-`postman/backend-tutorial.postman_collection.json`
-
-### Importing into Postman
-1. Open the **Postman** desktop application or web version.
-2. Click **Import** (top left).
-3. Select or drag-and-drop `postman/backend-tutorial.postman_collection.json`.
-4. The collection **Backend Development Assignment API** will appear in your sidebar.
-
-### Automated JWT Token Handling
-The collection is equipped with automatic Postman Test Scripts:
-- When you execute **Login User (Success)**, Postman automatically extracts the `token` from the response and stores it in the `jwtToken` variable.
-- When you execute **Create Post (Success)**, Postman automatically extracts the created post ID and stores it in the `postId` variable.
-- Subsequent private requests (`GET /profile`, `PUT /posts/:id`, `DELETE /posts/:id`) automatically attach the Bearer token in the `Authorization` header.
-
-### Recommended Testing Sequence
-1. **POST** `/api/users/register` - Create account
-2. **POST** `/api/users/login` - Obtain JWT token (auto-saved)
-3. **GET** `/api/users/profile` - Verify profile retrieval
-4. **POST** `/api/posts` - Create post (ID auto-saved)
-5. **GET** `/api/posts` - Retrieve all posts
-6. **GET** `/api/posts/:id` - Retrieve post by ID
-7. **PUT** `/api/posts/:id` - Update post title/description
-8. **DELETE** `/api/posts/:id` - Delete post
-
----
-
-## 📝 Sample Requests & Responses
-
-### 1. Register User
-**Request:**
-`POST http://localhost:5000/api/users/register`
+**Request Body:**
 ```json
 {
-  "name": "Yashbant Rout",
-  "email": "yashbant@example.com",
-  "password": "Password123"
+  "name": "Chinmay Rout",
+  "email": "chinmay@example.com",
+  "password": "password123"
 }
 ```
 
@@ -262,24 +47,26 @@ The collection is equipped with automatic Postman Test Scripts:
   "success": true,
   "message": "User registered successfully",
   "data": {
-    "_id": "673f4b23a1e2d4e891234501",
-    "name": "Yashbant Rout",
-    "email": "yashbant@example.com",
-    "createdAt": "2026-11-02T14:20:00.000Z",
+    "_id": "6ae8a7ca98de28308485a26e",
+    "name": "Chinmay Rout",
+    "email": "chinmay@example.com",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
 }
 ```
+*Tags: `Public` | `Auto-saves token`*
 
----
+</td>
+<td width="50%" valign="top">
 
-### 2. Login User
-**Request:**
-`POST http://localhost:5000/api/users/login`
+#### `POST` `/api/users/login` &nbsp; ![Status](https://img.shields.io/badge/Status-200%20OK-2ea44f?style=flat-square)
+*Authenticate user and obtain JWT Bearer token.*
+
+**Request Body:**
 ```json
 {
-  "email": "yashbant@example.com",
-  "password": "Password123"
+  "email": "chinmay@example.com",
+  "password": "password123"
 }
 ```
 
@@ -289,46 +76,40 @@ The collection is equipped with automatic Postman Test Scripts:
   "success": true,
   "message": "User logged in successfully",
   "data": {
-    "_id": "673f4b23a1e2d4e891234501",
-    "name": "Yashbant Rout",
-    "email": "yashbant@example.com",
+    "_id": "6ae8a7ca98de28308485a26e",
+    "name": "Chinmay Rout",
+    "email": "chinmay@example.com",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
 }
 ```
+*Tags: `Public` | `Auto-saves token`*
+
+</td>
+</tr>
+</table>
 
 ---
 
-### 3. Get User Profile (Protected)
-**Request:**
-`GET http://localhost:5000/api/users/profile`  
-*Header:* `Authorization: Bearer <token>`
+### 📝 Posts CRUD Endpoints
 
-**Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "User profile retrieved successfully",
-  "data": {
-    "_id": "673f4b23a1e2d4e891234501",
-    "name": "Yashbant Rout",
-    "email": "yashbant@example.com",
-    "createdAt": "2026-11-02T14:20:00.000Z",
-    "updatedAt": "2026-11-02T14:20:00.000Z"
-  }
-}
+<table>
+<tr>
+<td width="50%" valign="top">
+
+#### `POST` `/api/posts` &nbsp; ![Status](https://img.shields.io/badge/Status-201%20Created-2ea44f?style=flat-square)
+*Create a new post tied to the logged-in user.*
+
+**Headers:**
+```http
+Authorization: Bearer {{token}}
 ```
 
----
-
-### 4. Create Post (Protected)
-**Request:**
-`POST http://localhost:5000/api/posts`  
-*Header:* `Authorization: Bearer <token>`
+**Request Body:**
 ```json
 {
-  "title": "Mastering Node.js and MongoDB Atlas",
-  "description": "Step-by-step implementation of REST API with JWT authentication and Mongoose."
+  "title": "My First Post",
+  "description": "Created via Postman!"
 }
 ```
 
@@ -338,25 +119,23 @@ The collection is equipped with automatic Postman Test Scripts:
   "success": true,
   "message": "Post created successfully",
   "data": {
-    "_id": "673f4b98a1e2d4e891234599",
-    "title": "Mastering Node.js and MongoDB Atlas",
-    "description": "Step-by-step implementation of REST API with JWT authentication and Mongoose.",
+    "_id": "6ae8a7d998de28308485a26f",
+    "title": "My First Post",
+    "description": "Created via Postman!",
     "author": {
-      "_id": "673f4b23a1e2d4e891234501",
-      "name": "Yashbant Rout",
-      "email": "yashbant@example.com"
-    },
-    "createdAt": "2026-11-02T14:25:00.000Z",
-    "updatedAt": "2026-11-02T14:25:00.000Z"
+      "_id": "6ae8a7ca98de28308485a26e",
+      "name": "Chinmay Rout"
+    }
   }
 }
 ```
+*Tags: `🔒 Protected` | `Auto-saves post_id`*
 
----
+</td>
+<td width="50%" valign="top">
 
-### 5. Get All Posts (Public)
-**Request:**
-`GET http://localhost:5000/api/posts`
+#### `GET` `/api/posts` &nbsp; ![Status](https://img.shields.io/badge/Status-200%20OK-2ea44f?style=flat-square)
+*Retrieve all posts with populated author information.*
 
 **Response (200 OK):**
 ```json
@@ -365,30 +144,62 @@ The collection is equipped with automatic Postman Test Scripts:
   "count": 1,
   "data": [
     {
-      "_id": "673f4b98a1e2d4e891234599",
-      "title": "Mastering Node.js and MongoDB Atlas",
-      "description": "Step-by-step implementation of REST API with JWT authentication and Mongoose.",
+      "_id": "6ae8a7d998de28308485a26f",
+      "title": "My First Post",
+      "description": "Created via Postman!",
       "author": {
-        "_id": "673f4b23a1e2d4e891234501",
-        "name": "Yashbant Rout",
-        "email": "yashbant@example.com"
-      },
-      "createdAt": "2026-11-02T14:25:00.000Z",
-      "updatedAt": "2026-11-02T14:25:00.000Z"
+        "_id": "6ae8a7ca98de28308485a26e",
+        "name": "Chinmay Rout",
+        "email": "chinmay@example.com"
+      }
     }
   ]
 }
 ```
+*Tags: `🌐 Public` | `Returns array`*
 
----
+</td>
+</tr>
 
-### 6. Update Post (Owner Only)
-**Request:**
-`PUT http://localhost:5000/api/posts/673f4b98a1e2d4e891234599`  
-*Header:* `Authorization: Bearer <token>`
+<tr>
+<td width="50%" valign="top">
+
+#### `GET` `/api/posts/:id` &nbsp; ![Status](https://img.shields.io/badge/Status-200%20OK-2ea44f?style=flat-square)
+*Retrieve an individual post by ID.*
+
+**Response (200 OK):**
 ```json
 {
-  "title": "Mastering Node.js, Express & Atlas (Updated)"
+  "success": true,
+  "data": {
+    "_id": "6ae8a7d998de28308485a26f",
+    "title": "My First Post",
+    "description": "Created via Postman!",
+    "author": {
+      "_id": "6ae8a7ca98de28308485a26e",
+      "name": "Chinmay Rout"
+    }
+  }
+}
+```
+*Tags: `🌐 Public` | `Uses {{post_id}}`*
+
+</td>
+<td width="50%" valign="top">
+
+#### `PUT` `/api/posts/:id` &nbsp; ![Status](https://img.shields.io/badge/Status-200%20OK-2ea44f?style=flat-square)
+*Update post title or description (Owner only).*
+
+**Headers:**
+```http
+Authorization: Bearer {{token}}
+```
+
+**Request Body:**
+```json
+{
+  "title": "My Updated Post",
+  "description": "Updated via Postman!"
 }
 ```
 
@@ -398,26 +209,27 @@ The collection is equipped with automatic Postman Test Scripts:
   "success": true,
   "message": "Post updated successfully",
   "data": {
-    "_id": "673f4b98a1e2d4e891234599",
-    "title": "Mastering Node.js, Express & Atlas (Updated)",
-    "description": "Step-by-step implementation of REST API with JWT authentication and Mongoose.",
-    "author": {
-      "_id": "673f4b23a1e2d4e891234501",
-      "name": "Yashbant Rout",
-      "email": "yashbant@example.com"
-    },
-    "createdAt": "2026-11-02T14:25:00.000Z",
-    "updatedAt": "2026-11-02T14:30:00.000Z"
+    "_id": "6ae8a7d998de28308485a26f",
+    "title": "My Updated Post",
+    "description": "Updated via Postman!"
   }
 }
 ```
+*Tags: `🔒 Protected` | `Owner only (403 for others)`*
 
----
+</td>
+</tr>
 
-### 7. Delete Post (Owner Only)
-**Request:**
-`DELETE http://localhost:5000/api/posts/673f4b98a1e2d4e891234599`  
-*Header:* `Authorization: Bearer <token>`
+<tr>
+<td colspan="2" valign="top">
+
+#### `DELETE` `/api/posts/:id` &nbsp; ![Status](https://img.shields.io/badge/Status-200%20OK-2ea44f?style=flat-square)
+*Delete a post by ID (Owner only).*
+
+**Headers:**
+```http
+Authorization: Bearer {{token}}
+```
 
 **Response (200 OK):**
 ```json
@@ -425,41 +237,138 @@ The collection is equipped with automatic Postman Test Scripts:
   "success": true,
   "message": "Post deleted successfully",
   "data": {
-    "id": "673f4b98a1e2d4e891234599"
+    "id": "6ae8a7d998de28308485a26f"
   }
 }
+```
+*Tags: `🔒 Protected` | `Owner only (403 for others)`*
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📁 Clean MVC Architecture
+
+```text
+YASHBANTROUT250630WEBASSIGNEMENT/
+│
+├── public/
+│   └── test-dashboard.html       # Static Postman testing UI (served at /docs)
+│
+├── src/
+│   ├── config/
+│   │   └── database.js           # MongoDB Atlas connection handler
+│   │
+│   ├── controllers/
+│   │   ├── user.controller.js    # Register, login, and profile logic
+│   │   └── post.controller.js    # Post CRUD operations with author verification
+│   │
+│   ├── middleware/
+│   │   ├── auth.middleware.js    # JWT Bearer token authentication
+│   │   └── error.middleware.js   # 404 handler & centralized error formatting
+│   │
+│   ├── models/
+│   │   ├── user.model.js         # Mongoose User schema with bcrypt hashing
+│   │   └── post.model.js         # Mongoose Post schema with User reference
+│   │
+│   ├── routes/
+│   │   ├── user.route.js         # User auth routes
+│   │   └── post.route.js         # Post CRUD routes
+│   │
+│   ├── app.js                    # Express app configuration & static assets
+│   └── index.js                  # Entry point & server listener
+│
+├── postman/
+│   └── backend-tutorial.postman_collection.json # Exported Postman collection
+│
+├── tests/
+│   └── api.test.js               # 22 automated unit & integration tests
+│
+├── .env.example                  # Environment configuration template
+├── .gitignore                    # Excludes .env, node_modules, and cache
+└── package.json                  # Dependencies and scripts
 ```
 
 ---
 
-## 🧪 Testing & Quality Assurance
+## ⚡ Quick Start
 
-This codebase includes an automated test suite executed with Node's native test runner:
+### 1. Clone & Install
+```bash
+git clone https://github.com/YashbantRout/AssignmentBackend.git
+cd AssignmentBackend
+npm install
+```
+
+### 2. Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=1d
+```
+
+### 3. Start Development Server
+```bash
+npm run dev
+# or on Windows PowerShell:
+npm.cmd run dev
+```
+
+Server will run at `http://localhost:5000` with live database connection:
+```text
+[Database] MongoDB Connected successfully: ac-ey1hpsx-shard-00-02.diwo9t7.mongodb.net
+[Server] Server is running on port 5000
+[Server] Environment: development
+[Server] Health check: http://localhost:5000/
+```
+
+### 4. Open Static Testing Dashboard
+Open `http://localhost:5000/docs` in your browser to view the interactive operations dashboard.
+
+---
+
+## 📮 Postman Testing Guide
+
+1. Open Postman and click **Import**.
+2. Select [`postman/backend-tutorial.postman_collection.json`](postman/backend-tutorial.postman_collection.json).
+3. The collection is pre-configured with **Automated Test Scripts**:
+   - Running **Login User** automatically captures and saves the JWT token into `{{token}}`.
+   - Running **Create Post** automatically captures and saves the created post ID into `{{post_id}}`.
+   - All protected requests automatically use `Bearer {{token}}`.
+
+---
+
+## 🧪 Automated Testing
+
+Run the built-in test suite:
 ```bash
 npm test
 ```
 
-### Test Coverage Summary:
-- **User Model Tests:** Schema validation, bcrypt salt/hash generation, password comparison, and automatic removal of sensitive `password` field on `toJSON()`.
-- **JWT Utilities:** Signing tokens with user ID and payload verification.
-- **Auth Middleware (`protect`):** Missing headers, missing tokens, invalid tokens, and expired tokens.
-- **Controller Validations:** Input sanitization, missing field detection, duplicate email handling, and 400 Bad Request error returns.
-- **Resource Ownership:** Ensuring that non-authors attempting to update or delete a post receive `403 Forbidden`.
-- **Centralized Error Handling:** Formatting Mongoose `CastError`, `ValidationError`, duplicate key code `11000`, and malformed JSON payloads.
-- **HTTP Integration:** End-to-end routing, 404 handler, and server start/stop verification.
+```text
+✔ 1. User Model & Password Hashing Tests (3 tests)
+✔ 2. JWT Authentication & Token Utilities (1 test)
+✔ 3. Auth Middleware (protect) (2 tests)
+✔ 4. User Authentication Controllers (3 tests)
+✔ 5. Post CRUD Controllers & Authorization Rules (4 tests)
+✔ 6. Error Middleware & 404 Handler (3 tests)
+✔ 7. Express HTTP Server Integration (6 tests)
+ℹ tests 22 | suites 7 | pass 22 | fail 0
+```
 
 ---
 
-## 🛡 Security Best Practices
-
-1. **Passwords Hashed with Salt:** Passwords are never stored or logged in plain text. They are hashed using `bcrypt` with 10 salt rounds.
-2. **Password Sanitization:** Custom `toJSON` method strips passwords from any object serialized to JSON, ensuring accidental leaks never happen.
-3. **Stateless JWTs:** Tokens include standard claims and expiration times.
-4. **Ownership Verification:** Before performing `PUT` or `DELETE` on a post, the author ID is strictly verified against `req.user._id`.
-5. **Git Protection:** `.env` and `node_modules` are excluded via `.gitignore` to prevent secret leakage.
+## 🛡️ Security Highlights
+- **Password Salting & Hashing:** Implemented with `bcrypt` (10 rounds).
+- **Password Sanitization:** Custom `toJSON()` on User schema automatically prevents passwords from ever appearing in responses.
+- **Resource Ownership Authorization:** Updates and deletes verify that `post.author == req.user._id`, returning `403 Forbidden` for unauthorized users.
+- **Credential Protection:** `.env` is ignored by `.gitignore` to prevent credential exposure.
 
 ---
 
 ## 📄 License
-This project is open-source and available under the [ISC License](LICENSE).
-
+ISC License © 2026 Yashbant Rout
