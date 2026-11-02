@@ -19,3 +19,4 @@ router.put('/:id', protect, updatePost);
 router.delete('/:id', protect, deletePost);
 
 module.exports = router;
+
