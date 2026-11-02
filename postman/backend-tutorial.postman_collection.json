@@ -1,0 +1,555 @@
+{
+  "info": {
+    "_postman_id": "c1f7a18b-59b1-4f12-a723-d886915b7e28",
+    "name": "Backend Development Assignment API",
+    "description": "Complete Postman API Collection for Node.js, Express.js, MongoDB REST API. Covers User Authentication (Register, Login, Profile) and Post CRUD operations with JWT Authorization.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "postId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "1. Register User (Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "register"]
+            },
+            "description": "Registers a new user and returns JWT token."
+          },
+          "response": [
+            {
+              "name": "201 Created Response",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"createdAt\": \"2026-11-02T14:00:00.000Z\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Register User (Duplicate Email Error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Duplicate\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "register"]
+            },
+            "description": "Attempts to register with an existing email; returns 400."
+          },
+          "response": [
+            {
+              "name": "400 Duplicate Email Response",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"A user with this email address already exists.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "3. Register User (Missing Fields Error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Incomplete User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "register"]
+            },
+            "description": "Attempts to register without email and password; returns 400."
+          },
+          "response": [
+            {
+              "name": "400 Missing Fields",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Please provide name, email, and password.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "4. Login User (Success - Auto Saves Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.token) {",
+                  "    pm.environment.set(\"jwtToken\", res.data.token);",
+                  "    pm.collectionVariables.set(\"jwtToken\", res.data.token);",
+                  "    console.log(\"Saved JWT token to environment & collection variables\");",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "login"]
+            },
+            "description": "Authenticates user, returns JWT token, and saves it into jwtToken variable."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User logged in successfully\",\n  \"data\": {\n    \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "5. Login User (Invalid Credentials Error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"WrongPassword!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "login"]
+            },
+            "description": "Attempts login with wrong password; returns 401."
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized Response",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Invalid email or password.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "6. Get User Profile (Success - Authenticated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile"]
+            },
+            "description": "Retrieves current logged-in user profile with JWT authentication."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User profile retrieved successfully\",\n  \"data\": {\n    \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"createdAt\": \"2026-11-02T14:00:00.000Z\",\n    \"updatedAt\": \"2026-11-02T14:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "7. Get User Profile (Unauthorized - No Token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile"]
+            },
+            "description": "Attempts accessing profile without Authorization header; returns 401."
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized Response",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Not authorized to access this route. No token provided.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Posts CRUD",
+      "item": [
+        {
+          "name": "1. Create Post (Success)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data._id) {",
+                  "    pm.environment.set(\"postId\", res.data._id);",
+                  "    pm.collectionVariables.set(\"postId\", res.data._id);",
+                  "    console.log(\"Saved postId to variables:\", res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My First Tutorial Post\",\n  \"description\": \"Learning Node.js, Express, and MongoDB Atlas step by step!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Creates a new post tied to authenticated user. Automatically saves postId."
+          },
+          "response": [
+            {
+              "name": "201 Created Response",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post created successfully\",\n  \"data\": {\n    \"_id\": \"65e2b100f5a1e2d4e8912389\",\n    \"title\": \"My First Tutorial Post\",\n    \"description\": \"Learning Node.js, Express, and MongoDB Atlas step by step!\",\n    \"author\": {\n      \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\"\n    },\n    \"createdAt\": \"2026-11-02T14:05:00.000Z\",\n    \"updatedAt\": \"2026-11-02T14:05:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Create Post (Unauthorized - No Token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unauthorized Post\",\n  \"description\": \"Should fail without token.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Attempts post creation without token; returns 401."
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized Response",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Not authorized to access this route. No token provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "3. Create Post (Validation Error - Missing Title)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Post missing required title field.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Attempts post creation without required title; returns 400."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request Response",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Please provide both title and description for the post.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "4. Get All Posts (Success)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Retrieves all posts with populated author information."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"65e2b100f5a1e2d4e8912389\",\n      \"title\": \"My First Tutorial Post\",\n      \"description\": \"Learning Node.js, Express, and MongoDB Atlas step by step!\",\n      \"author\": {\n        \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\"\n      },\n      \"createdAt\": \"2026-11-02T14:05:00.000Z\",\n      \"updatedAt\": \"2026-11-02T14:05:00.000Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "5. Get Post by ID (Success)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            },
+            "description": "Retrieves a single post by ID with populated author."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"65e2b100f5a1e2d4e8912389\",\n    \"title\": \"My First Tutorial Post\",\n    \"description\": \"Learning Node.js, Express, and MongoDB Atlas step by step!\",\n    \"author\": {\n      \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\"\n    },\n    \"createdAt\": \"2026-11-02T14:05:00.000Z\",\n    \"updatedAt\": \"2026-11-02T14:05:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "6. Get Post by ID (Invalid ID Format Error)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/123-not-an-objectid",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "123-not-an-objectid"]
+            },
+            "description": "Attempts to fetch post with invalid ObjectId; returns 400."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request Response",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Invalid post ID format: 123-not-an-objectid\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "7. Update Post (Success - Author Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Tutorial Post Title\",\n  \"description\": \"Updated description with advanced Express and Mongoose concepts.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            },
+            "description": "Updates a post. Only the post author can update; returns 200."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post updated successfully\",\n  \"data\": {\n    \"_id\": \"65e2b100f5a1e2d4e8912389\",\n    \"title\": \"Updated Tutorial Post Title\",\n    \"description\": \"Updated description with advanced Express and Mongoose concepts.\",\n    \"author\": {\n      \"_id\": \"65e2b0c3f5a1e2d4e8912345\",\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\"\n    },\n    \"createdAt\": \"2026-11-02T14:05:00.000Z\",\n    \"updatedAt\": \"2026-11-02T14:15:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "8. Update Post (Unauthorized - No Token)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unauthorized Update Attempt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            },
+            "description": "Attempts update without Authorization header; returns 401."
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized Response",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Not authorized to access this route. No token provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "9. Delete Post (Success - Author Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            },
+            "description": "Deletes a post. Only the post author can delete; returns 200."
+          },
+          "response": [
+            {
+              "name": "200 OK Response",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post deleted successfully\",\n  \"data\": {\n    \"id\": \"65e2b100f5a1e2d4e8912389\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "10. Delete Post (Unauthorized - No Token)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}"]
+            },
+            "description": "Attempts delete without token; returns 401."
+          },
+          "response": [
+            {
+              "name": "401 Unauthorized Response",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"success\": false,\n  \"message\": \"Not authorized to access this route. No token provided.\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
